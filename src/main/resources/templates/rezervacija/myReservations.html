@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+    <head>
+        <meta charset="UTF-8">
+        <title>Rezervacije</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/myReservations.css}"/>
+    </head>
+    <body>
+
+       <div class="btn1">
+            <span>
+                <i class="fa fa-bars" style="font-size: 24px"></i>
+            </span>
+        </div>
+        <nav class="sidebar">
+            <div class="text">Meni</div>
+            <ul>
+                <li class="user active"><a href="/main">Pocetna stranica</a></li>
+                <li>
+                    <a href="#" class="register-btn">Rezervacija
+                        <span class="first"></span>
+                    </a>
+                    <ul class="register-show">
+                        <li><a href="http://localhost:8080/reservation/myReservations">Prikazi moje rezervacije</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a href="http://localhost:8080/reservation/allReservations">Prikazi sve rezervacije</a></li>
+                        <li><a href="http://localhost:8080/reservation/chooseDate">Prikazi zauzetost sala po danu</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="sala-btn" sec:authorize="hasRole('ADMIN')">Sala
+                        <span class="second"></span>
+                    </a>
+                    <ul class="sala-show">
+                        <li><a href="http://localhost:8080/hall/allHalls">Prikazi sve sale</a></li>
+                        <li class="unesi-salu-btn">
+                            <a href="#">Unesi salu</a>
+                            <ul class="unesi-salu-show">
+                              <li><a th:href="@{/hall/createHall(tip='Amfiteatar')}">Amfiteatar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='RC sala')}">Racunarski centar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Kombinovana')}">Kombinovana</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Sala za sastanke')}">Sala za sastanke</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Ucionica')}">Ucionica</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+
+                    <a href="#" id="a_log">Odjavi se</a>
+                    <form id="postForm" action="#" th:action="@{/logout}" method="POST" style="display:none;">
+                        <input type="submit" value="logout" />
+                    </form>
+
+                </li>
+
+
+
+
+
+            </ul>
+        </nav>
+
+
+
+
+
+
+        <div class="container">
+            <img src="https://oas.fon.bg.ac.rs/wp-content/uploads/2023/04/FON-Logo-Tamni.png" alt="FON Logo" class="fon-logo">
+            <h3>Moje rezervacije sala na FON-u</h3>
+            <table class="table table-bordered table-dark">
+                <thead class="table-head">
+                    <tr>
+                        <th>Sala</th>
+                        <th>Korisnik</th>
+                        <th>Vreme Početka</th>
+                        <th>Vreme Završetka</th>
+                        <th>Status Rezervacije</th>
+                        <th>Svrha</th>
+                        <th>Opis</th>
+                        <th>Organizator</th>
+                        <th>Akcije</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <tr th:each="rezervacija : ${rezervacije}"
+                          th:class="${rezervacija.statusRezervacije == 'POTVRDJENA' ? 'confirmed' : ''} 
+                   + ${rezervacija.statusRezervacije == 'ODBIJENA' ? 'rejected' : '' }
+                   + ${rezervacija.statusRezervacije == 'U CEKANJU' ? 'pending' : ''}">
+                        <td th:text="${rezervacija.sala.naziv}">Sala</td>
+                         <td>
+                            <div class="img-container">
+                                <img th:if="${rezervacija.korisnik.osoba.getClass().getSimpleName() == 'Student'}" th:src="@{/images/student.png}" alt="Student Image">
+                                <img th:if="${rezervacija.korisnik.osoba.getClass().getSimpleName() != 'Student'}" th:src="@{/images/employee.png}" alt="Employee Image">
+                            </div>
+
+                            <span th:if="${rezervacija.korisnik.osoba.getClass().getSimpleName() == 'Student'}"
+                                  th:text="${ rezervacija.korisnik.osoba.ime + ' ' + rezervacija.korisnik.osoba.prezime}">Student</span>
+                            <span th:if="${rezervacija.korisnik.osoba.getClass().getSimpleName() == 'ZaposleniUNastavi'}"
+                                  th:text="${rezervacija.korisnik.osoba.titula + ' ' + rezervacija.korisnik.osoba.ime + ' ' + rezervacija.korisnik.osoba.prezime}">Zaposleni u nastavi</span>
+                            <span th:if="${rezervacija.korisnik.osoba.getClass().getSimpleName() == 'ZaposleniVanNastave'}"
+                                  th:text="${rezervacija.korisnik.osoba.titula + rezervacija.korisnik.osoba.ime + ' ' + rezervacija.korisnik.osoba.prezime}">Zaposleni van nastave</span>
+                        </td>
+                        <td th:text="${#dates.format(rezervacija.vremePocetka, 'yyyy-MM-dd HH:mm')}">Vreme Pocetka</td>
+                        <td th:text="${#dates.format(rezervacija.vremeZavrsetka, 'yyyy-MM-dd HH:mm')}">Vreme Završetka</td>
+                        <td th:text="${rezervacija.statusRezervacije}">Status Rezervacije</td>
+                        <td th:text="${rezervacija.svrhaRezervacije.svrha}">Svrha</td>
+                        <td th:text="${rezervacija.svrhaRezervacije.opis}">Opis</td>
+                        <td th:text="${rezervacija.svrhaRezervacije.organizator}">Organizator</td>
+                        <td>
+
+                            <a th:href="@{/reservation/deleteMyReservation(salaId=${rezervacija.RezervacijaID.sala_id}, korisnikId=${rezervacija.RezervacijaID.korisnik_id},id=${rezervacija.RezervacijaID.id})}" class="btn ponisti_dugme btn-sm" onclick="return confirm('Da li ste sigurni da želite da obrišete ovu rezervaciju?');">Obriši</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+         <script type="text/javascript" th:src="@{/js/myReservations.js}"></script>
+
+
+
+    </body>
+</html>

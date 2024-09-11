@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forma za unos podataka</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/hallsSave.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+    
+     <div class="btn1">
+            <span>
+                <i class="fa fa-bars" style="font-size: 24px"></i>
+            </span>
+        </div>
+        <nav class="sidebar">
+            <div class="text">Meni</div>
+            <ul>
+                <li class="user active"><a href="/main">Pocetna stranica</a></li>
+                <li>
+                    <a href="#" class="register-btn">Rezervacija
+                        <span class="first"></span>
+                    </a>
+                    <ul class="register-show">
+                        <li><a href="http://localhost:8080/reservation/myReservations">Prikazi moje rezervacije</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a href="http://localhost:8080/reservation/allReservations">Prikazi sve rezervacije</a></li>
+                        <li><a href="http://localhost:8080/reservation/chooseDate">Prikazi zauzetost sala po danu</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="sala-btn" sec:authorize="hasRole('ADMIN')">Sala
+                        <span class="second"></span>
+                    </a>
+                    <ul class="sala-show">
+                        <li><a href="http://localhost:8080/hall/allHalls">Prikazi sve sale</a></li>
+                        <li class="unesi-salu-btn">
+                            <a href="#">Unesi salu</a>
+                            <ul class="unesi-salu-show">
+                        <li><a th:href="@{/hall/createHall(tip='Amfiteatar')}">Amfiteatar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='RC sala')}">Racunarski centar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Kombinovana')}">Kombinovana</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Sala za sastanke')}">Sala za sastanke</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Ucionica')}">Ucionica</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+
+                    <a href="#" id="a_log">Izloguj se</a>
+                    <form id="postForm" action="#" th:action="@{/logout}" method="POST" style="display:none;">
+                        <input type="submit" value="logout" />
+                    </form>
+
+                </li>
+
+
+
+
+
+            </ul>
+        </nav>
+    <div class="container">
+        <h3>Unos podataka o sali</h3>
+        <form class="update-form" th:action="@{/hall/saveHall(tip=${tip})}" th:object="${sala}" method="post">
+            
+            <div>
+                <input type="hidden" th:field="*{id}" class="form-control">
+            </div>
+            
+            <div>
+                <label for="naziv">Naziv sale</label>
+                <input type="text" id="naziv" th:field="*{naziv}" class="form-control">
+            </div>
+
+            <div>
+                <label for="brojMesta">Broj mesta</label>
+                <input type="text" id="brojMesta" th:field="*{brojMesta}" class="form-control" >
+            </div>
+
+            <div>
+                <label for="napomena">Napomena</label>
+                <input type="text" id="napomena" th:field="*{napomena}" class="form-control">
+            </div>
+
+            
+               <div th:if="${tip.equals('Kombinovana')|| tip.equals('RC sala')}">
+                <label for="brojRacunara">Broj racunara</label>
+                <input type="text" id="brojRacunara" th:field="${sala.brojRacunara}" class="form-control">
+            </div>
+            
+            <div>
+                <label for="status">Status</label>
+                <select id="status" th:field="*{status}" class="form-control">
+                    <option value="true" th:selected="*{status}">Aktivna</option>
+                    <option value="false" th:selected="*{!status}">Neaktivna</option>
+                </select>
+            </div>
+
+            <div class="back-save">
+                <a  href="javascript:history.back()" class="btn-primary">Nazad</a>
+                <button type="submit" class="btn-primary">Sačuvaj</button>
+            </div>
+        </form>
+    </div>
+    
+     <script type="text/javascript" th:src="@{/js/hallsSave.js}"></script>
+</body>
+</html>

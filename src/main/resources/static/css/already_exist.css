@@ -1,0 +1,143 @@
+body {
+    background-color: #f3f3f6;
+    font-family: Arial, sans-serif;
+}
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+.alert {
+    margin-top: 20px;
+}
+
+.btn1 {
+    position: absolute;
+    top: 15px;
+    left: 45px;
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    background: #1b1b1b;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: left 0.4s ease;
+    z-index: 20;
+}
+.btn1.click {
+    left: 315px;
+}
+.btn1 span {
+    color: white;
+    font-size: 28px;
+    line-height: 45px;
+}
+.sidebar {
+    position: fixed;
+    width: 310px;
+    height: 100%;
+    left: -310px;
+    background: #1b1b1b;
+    transition: left 0.4s ease;
+    z-index: 20;
+
+
+}
+.sidebar.show {
+    left: 0px;
+}
+.sidebar .text {
+    color: white;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 65px;
+    text-align: center;
+    background: #1e1e1e;
+    letter-spacing: 1px;
+}
+nav ul {
+    background: #1b1b1b;
+    height: 100%;
+    width: 100%;
+    list-style: none;
+}
+nav ul li {
+    line-height: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+nav ul li:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+nav ul li a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding-left: 5px;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    border-left: 3px solid transparent;
+}
+nav ul li.active a {
+    color: cyan;
+    background: #1e1e1e;
+    border-left-color: cyan;
+}
+nav ul li a:hover {
+    background: #1e1e1e;
+}
+nav ul ul {
+    position: static;
+    display: none;
+}
+nav ul .register-show.show,
+nav ul .sala-show.show {
+    display: block;
+}
+
+
+
+nav ul .sala-show ul {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+nav ul .unesi-salu-show {
+    display: none;
+}
+
+nav ul .sala-show.show ul.unesi-salu-show.show {
+    display: block;
+}
+
+
+
+
+nav ul ul li {
+    line-height: 42px;
+    border-top: none;
+}
+nav ul ul li a {
+    font-size: 17px;
+    color: #e6e6e6;
+    padding-left: 5px;
+}
+nav ul li.active ul li a {
+    color: #e6e6e6;
+    background: #1b1b1b;
+    border-left-color: transparent;
+}
+nav ul ul li a:hover {
+    color: cyan !important;
+    background: #1e1e1e !important;
+}
+nav ul li a span {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 22px;
+    transition: transform 0.4s;
+}

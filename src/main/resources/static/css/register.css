@@ -1,0 +1,59 @@
+body {
+    background-color: #f3f3f6;/* Tamno plava boja */
+    color: #ffffff; /* Bela boja teksta za bolju vidljivost na tamnoj pozadini */
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 50px;
+    background-color: #091038;/* Tamno plava boja kontejnera */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 50px;
+}
+
+.form-container {
+    background-color: #111d63; /* Tamno plava boja forme */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff; /* Bela boja naslova */
+}
+
+label {
+    font-weight: bold;
+    color: #ffffff; /* Bela boja za labelu */
+}
+
+.btn-primary {
+    width: 100%;
+    background-color: #688fd9; /* Nijansa plave za dugme */
+    color: #ffffff; /* Bela boja teksta na dugmetu */
+    border-color: #688fd9; /* Boja ivice dugmeta */
+}
+
+.btn-primary:hover {
+    background-color: #091038; /* Boja pozadine na hover dugmeta */
+}
+
+.form-control {
+    background-color: #ffffff; /* Bela boja polja za unos */
+    color: #688fd9; /* Plava boja teksta u polju za unos */
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    max-width: 200px;
+    height: auto;
+}

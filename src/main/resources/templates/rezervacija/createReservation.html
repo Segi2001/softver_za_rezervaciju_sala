@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FON</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/createReservation.css}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <style>
+           /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    background-color: #f0f2f5; /* Sveta plava boja pozadine */
+    color: #007bff; /* Nebo plava boja teksta */
+    font-family: Arial, sans-serif;
+}
+h1 {
+    text-align: center;
+    color: #007bff; /* Plava boja za naslov */
+    margin-bottom: 20px;
+    font-size: 24px; /* Povećan font */
+}
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #007bff; /* Plava ivica */
+    border-radius: 10px;
+    box-shadow: -10px -44px 96px 6px rgba(171, 168, 171, 0.77);
+    background-color: #f0f2f5; /* Svetla plava boja pozadine unutar forme */
+}
+
+.form-control {
+    margin-bottom: 10px;
+    background-color: #ffffff; /* Tamno plava boja pozadine polja */
+    color: #202323; /* Sveta plava boja teksta u polju */
+}
+div {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    font-weight: bold;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: none; /* Uklonjeni okviri */
+    border-radius: 5px;
+    background-color: #ffffff; /* Bela boja polja */
+    color: #202323; /* Tamna boja teksta u polju */
+    font-size: 16px; /* Povećan font */
+}
+input::placeholder, textarea::placeholder {
+    color: #202323; /* Tamna boja za placeholder */
+}
+button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Plava boja za dugme */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3; /* Tamnija plava boja na hover dugmeta */
+}
+.create-heading {
+    padding-top: 3rem;
+}
+.create-form {
+    border: 2px solid #1C6EA4;
+    box-shadow: -10px -44px 96px 6px rgba(171,168,171,0.77);
+    padding: 25px;
+    border-radius: 8px
+}
+.create-form .save-btn {
+    width: 100%;
+    background-color: #007bff; /* Plava boja za dugme */
+}
+.create-form .save-btn:hover {
+    background-color: #0056b3; /* Tamnija plava boja na hover dugmeta */
+}
+
+/* Sidebar Styles */
+.btn1 {
+    position: absolute;
+    top: 15px;
+    left: 45px;
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    background: #1b1b1b;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: left 0.4s ease;
+    z-index: 20;
+}
+.btn1.click {
+    left: 315px;
+}
+.btn1 span {
+    color: white;
+    font-size: 28px;
+    line-height: 45px;
+}
+.sidebar {
+    position: fixed;
+    width: 310px;
+    height: 100%;
+    left: -310px;
+    background: #1b1b1b;
+    transition: left 0.4s ease;
+    z-index: 20;
+}
+.sidebar.show {
+    left: 0px;
+}
+.sidebar .text {
+    color: white;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 65px;
+    text-align: center;
+    background: #1e1e1e;
+    letter-spacing: 1px;
+}
+nav ul {
+    background: #1b1b1b;
+    height: 100%;
+    width: 100%;
+    list-style: none;
+}
+nav ul li {
+    line-height: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+nav ul li:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+nav ul li a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding-left: 5px;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    border-left: 3px solid transparent;
+}
+nav ul li.active a {
+    color: cyan;
+    background: #1e1e1e;
+    border-left-color: cyan;
+}
+nav ul li a:hover {
+    background: #1e1e1e;
+}
+nav ul ul {
+    position: static;
+    display: none;
+}
+nav ul .register-show.show,
+nav ul .sala-show.show {
+    display: block;
+}
+nav ul .sala-show ul {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px;
+}
+nav ul .unesi-salu-show {
+    display: none;
+}
+nav ul .sala-show.show ul.unesi-salu-show.show {
+    display: block;
+}
+nav ul ul li {
+    line-height: 42px;
+    border-top: none;
+}
+nav ul ul li a {
+    font-size: 17px;
+    color: #e6e6e6;
+    padding-left: 5px;
+}
+nav ul li.active ul li a {
+    color: #e6e6e6;
+    background: #1b1b1b;
+    border-left-color: transparent;
+}
+nav ul ul li a:hover {
+    color: cyan !important;
+    background: #1e1e1e !important;
+}
+nav ul li a span {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 22px;
+    transition: transform 0.4s;
+}
+
+
+  .logo-img {
+                max-width: 150px;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+               
+            }
+            
+            
+             .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding-bottom: 20px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="btn1">
+            <span>
+                <i class="fa fa-bars" style="font-size: 24px"></i>
+            </span>
+        </div>
+        <nav class="sidebar">
+            <div class="text">Meni</div>
+            <ul>
+                <li class="user active"><a href="/main">Pocetna stranica</a></li>
+                <li>
+                    <a href="#" class="register-btn">Rezervacija
+                        <span class="first"></span>
+                    </a>
+                    <ul class="register-show">
+                        <li><a href="http://localhost:8080/reservation/myReservations">Prikazi moje rezervacije</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a href="http://localhost:8080/reservation/allReservations">Prikazi sve rezervacije</a></li>
+                        <li><a href="http://localhost:8080/reservation/chooseDate">Prikazi zauzetost sala po danu</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="sala-btn" sec:authorize="hasRole('ADMIN')">Sala
+                        <span class="second"></span>
+                    </a>
+                    <ul class="sala-show">
+                        <li><a href="http://localhost:8080/hall/allHalls">Prikazi sve sale</a></li>
+                        <li class="unesi-salu-btn">
+                            <a href="#">Unesi salu</a>
+                            <ul class="unesi-salu-show">
+                                <li><a th:href="@{/hall/createHall(tip='Amfiteatar')}">Amfiteatar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='RC sala')}">Racunarski centar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Kombinovana')}">Kombinovana</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Sala za sastanke')}">Sala za sastanke</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Ucionica')}">Ucionica</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" id="a_log">Odjavi se</a>
+                    <form id="postForm" action="#" th:action="@{/logout}" method="POST" style="display:none;">
+                        <input type="submit" value="logout" />
+                    </form>
+                </li>
+            </ul>
+        </nav>
+        <div id="minuteLimit" th:attr="data-minute-limit=${minute}" style="display:none;"></div>
+        <div class="container">
+            
+       
+           <img src="https://oas.fon.bg.ac.rs/wp-content/uploads/2023/04/FON-Logo-Tamni.png" alt="Logo Fona" class="logo-img">
+        <h1 class="create-heading">Kreiraj Rezervaciju</h1>
+        <form th:action="@{/reservation/createReservation}" th:object="${rezervacijaDTO}" method="post" class="create-form">
+            <div>
+                <label for="sala">Sala:</label>
+                <input type="text" id="salaNaziv" th:value="${sala.naziv}" readonly />
+                <!-- Skriveno polje za postavljanje ID-a sale -->
+                <input type="hidden" id="salaId" th:field="*{salaId}" th:value="${sala.id}" />
+            </div>
+            <div>
+                <label for="vremePocetka">Vreme Početka:</label>
+                <input type="datetime-local" id="vremePocetka" th:field="*{vremePocetka}" class="form-control" readonly />
+            </div>
+            <div>
+                <label for="tem">Trajanje rezervacije:</label>
+                <select id="tem" th:field="*{trajanje}" onchange="updateEndTime()">
+                    <option th:each="tempTrajanje:${trajanja}" th:value="${tempTrajanje}" th:text="${tempTrajanje}" />
+                </select>
+            </div>
+            <div>
+                <label for="vremeZavrsetka">Vreme Završetka:</label>
+                <input type="datetime-local" id="vremeZavrsetka" th:field="*{vremeZavrsetka}" class="form-control" readonly />
+            </div>
+            <div>
+                <label for="svrha">Svrha:</label>
+                <input type="text" id="svrha" th:field="*{svrhaRezervacije.svrha}" placeholder="Unesite svrhu rezervacije" required />
+            </div>
+            <div>
+                <label for="organizator">Organizator:</label>
+                <input type="text" id="organizator" th:field="*{svrhaRezervacije.organizator}" placeholder="Unesite ime organizatora" required />
+            </div>
+            <div>
+                <label for="opis">Opis:</label>
+                <textarea id="opis" th:field="*{svrhaRezervacije.opis}" placeholder="Unesite opis rezervacije" required></textarea>
+            </div>
+            <div>
+                <button type="submit" class="save-btn">Rezerviši</button>
+            </div>
+        </form>
+        <div th:if="${error}">
+            <p th:text="${error}" style="color: red;"></p>
+        </div>
+         </div>
+        <script type="text/javascript" th:src="@{/js/createReservation.js}"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const minuteLimitElement = document.getElementById('minuteLimit');
+                const vremePocetka = document.getElementById('vremePocetka');
+                const vremePocetkaVrednost = vremePocetka.value;
+                const minuteLimit = parseInt(minuteLimitElement.getAttribute('data-minute-limit'));
+                filterComboBox(minuteLimit, vremePocetkaVrednost);
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uspešna registracija</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" th:href="@{/css/successful_registration.css}"/>
+</head>
+<body>
+    <div class="container">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Uspešna registracija!</h4>
+            <p>Uspešno ste se registrovali.</p>
+            <hr>
+            <p>Vaša trenutna šifra je: <strong th:text="${trenutnaSifra}"></strong></p>
+            <p>Sa ovom šifrom možete pristupiti vašem nalogu. Molimo vas da je sačuvate na sigurnom mestu.</p>
+            <a href="/login" class="btn btn-primary">Prijavite se</a>
+        </div>
+    </div>
+</body>
+</html>

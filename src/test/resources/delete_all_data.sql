@@ -1,0 +1,17 @@
+DELETE FROM rezervacija;
+DELETE FROM svrha_rezervacije;
+DELETE FROM roles;
+DELETE FROM sala;
+DELETE FROM korisnik;
+DELETE FROM registracija;
+DELETE FROM osoba;
+DELETE FROM zaposleni;
+DELETE FROM zaposleni_u_nastavi;
+DELETE FROM zaposleni_van_nastave;
+DELETE FROM student;
+DELETE FROM amfiteatar;
+DELETE FROM kombinovana;
+DELETE FROM rc_sala;
+DELETE FROM sala_za_sastanke;
+DELETE FROM ucionica;
+DELETE FROM api_key;

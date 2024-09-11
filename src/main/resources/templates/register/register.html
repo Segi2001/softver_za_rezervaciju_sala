@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registracija korisnika</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" th:href="@{/css/register.css}"/>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="https://oas.fon.bg.ac.rs/wp-content/uploads/2023/04/FON-Logo-Tamni.png" alt="Logo" class="logo-img">
+        </div>
+        <div class="form-container">
+            <h1>Registracija korisnika</h1>
+            <form th:action="@{/register/result}" method="post">
+                <div class="form-group">
+                    <label for="email" style="color: #ffffff;">Unesite email adresu</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Unesite email" style="color: #688fd9;" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Pošalji</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

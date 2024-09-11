@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korisnik već postoji</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" th:href="@{/css/employee_not_exist.css}"/>
+</head>
+<body>
+    <div class="container">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Greška!</h4>
+            <p>Osoba sa datim emailom ne postoji u sistemu. Molimo pokušajte ponovo sa drugom email adresom.</p>
+            <hr>
+            <form th:action="@{/register/form}" method="get">
+                <button type="submit" class="btn btn-primary">Vratite se na registracionu formu</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

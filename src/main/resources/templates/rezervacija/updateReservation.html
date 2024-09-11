@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+    <head>
+        <meta charset="UTF-8">
+        <title>Forma za Rezervaciju</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/updateReservation.css}"/>
+    </head>
+    <body>
+
+
+        <div class="btn1">
+            <span>
+                <i class="fa fa-bars" style="font-size: 24px"></i>
+            </span>
+        </div>
+        <nav class="sidebar">
+            <div class="text">Meni</div>
+            <ul>
+                <li class="user active"><a href="/main">Pocetna stranica</a></li>
+                <li>
+                    <a href="#" class="register-btn">Rezervacija
+                        <span class="first"></span>
+                    </a>
+                    <ul class="register-show">
+                        <li><a href="http://localhost:8080/reservation/myReservations">Prikazi moje rezervacije</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a href="http://localhost:8080/reservation/allReservations">Prikazi sve rezervacije</a></li>
+                        <li><a href="http://localhost:8080/reservation/chooseDate">Prikazi zauzetost sala po danu</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="sala-btn" sec:authorize="hasRole('ADMIN')">Sala
+                        <span class="second"></span>
+                    </a>
+                    <ul class="sala-show">
+                        <li><a href="http://localhost:8080/hall/allHalls">Prikazi sve sale</a></li>
+                        <li class="unesi-salu-btn">
+                            <a href="#">Unesi salu</a>
+                            <ul class="unesi-salu-show">
+                           <li><a th:href="@{/hall/createHall(tip='Amfiteatar')}">Amfiteatar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='RC sala')}">Racunarski centar</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Kombinovana')}">Kombinovana</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Sala za sastanke')}">Sala za sastanke</a></li>
+                                <li><a th:href="@{/hall/createHall(tip='Ucionica')}">Ucionica</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+
+                    <a href="#" id="a_log">Odjavi se</a>
+                    <form id="postForm" action="#" th:action="@{/logout}" method="POST" style="display:none;">
+                        <input type="submit" value="logout" />
+                    </form>
+
+                </li>
+
+
+
+
+
+            </ul>
+        </nav>
+
+
+
+
+        <div class="container">
+            <img src="https://oas.fon.bg.ac.rs/wp-content/uploads/2023/04/FON-Logo-Tamni.png" alt="Logo Fona" class="logo-img">
+            <h3>Izmeni rezervaciju</h3>
+
+            <form th:action="@{/reservation/updateReservation}" th:object="${rezervacijaDTO}" method="post" class="form-horizontal update-form">
+
+
+                <input type="hidden" th:field="${rezervacijaDTO.salaId}"/>
+                <input type="hidden" th:field="${rezervacijaDTO.korisnikId}"/>
+                <input type="hidden" th:field="${rezervacijaDTO.id}"/>
+                <input type="hidden" th:field="${rezervacijaDTO.svrhaRezervacije.id}"/>
+
+
+                <div class="form-group">
+
+                    <label for="vremePocetka">Odaberite datum:</label>
+                    <input type="hidden" id="vremePoc" th:field="*{vremePocetka}" class="form-control"/>
+                    <input type="date" id="vremePocetka"   class="form-control"  required/>
+                    <label for="time">Odaberite vreme:</label>
+                    <select id="time" class="form-control">
+                        <!--                        <option onload="parseTime()"></option>-->
+                    </select>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label for="tem">Trajanje rezervacije:</label>
+                    <select id="tem" th:field="*{trajanje}"  class="form-control">
+                        <option th:each="tempTrajanje:${trajanja}" th:value="${tempTrajanje}" th:text="${tempTrajanje}"   />
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="vremeZavrsetka" class="control-label">Vreme Završetka</label>
+                    <input type="datetime-local" th:field="*{vremeZavrsetka}" class="form-control"/ readonly>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="svrhaRezervacije" class="control-label">Svrha</label>
+                    <input type="text" th:field="*{svrhaRezervacije.svrha}" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="organizator" class="control-label">Organizator</label>
+                    <input type="text" th:field="*{svrhaRezervacije.organizator}" class="form-control" />
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label for="opis" class="control-label">Opis</label>
+                    <textarea th:field="*{svrhaRezervacije.opis}" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group back-save">
+                    <a href="javascript:history.back()" class="btn btn-primary">Nazad</a> <!-- Dugme za povratak -->
+                    <button type="submit" class="btn btn-primary">Sačuvaj</button>
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript" th:src="@{/js/updateReservation.js}"></script>
+        <script>
+
+
+
+       
+
+            function parseTime(newDate) {
+
+                if(newDate){
+                     var firstTimeOption = $('#time option:first').val();
+                    document.getElementById("time").val = firstTimeOption;
+                    return;
+                }
+                const fullDateTime = $('input[name="vremePocetka"]').val();
+                const timeOnly = fullDateTime.split('T')[1];
+                const niz = timeOnly.split(":");
+                const hour = parseInt(niz[0]) + "h";
+                if (parseInt(niz[1]) !== 0) {
+
+                    const minute = parseInt(niz[1]) + "min";
+                    const time = hour + " " + minute;
+                    console.log("Vreme u parseTime f ji je: " + time);
+                    //$("#time").val("10h 30min");
+                    //$("#time option[value=time]").prop('selected', true);
+
+                    document.getElementById("time").value = time;
+
+                    console.log("Vreme nakon setovanja u f ji je: " + $("#time").val());
+
+                    return;
+                }
+
+                document.getElementById("time").value = hour;
+
+            }
+
+
+            function parseDate() {
+                const fullDateTime = $('input[name="vremePocetka"]').val();
+                const dateOnly = fullDateTime.split('T')[0];
+                document.getElementById('vremePocetka').value = dateOnly;
+            }
+
+
+
+
+            $(function () {
+                var dtToday = new Date();
+
+                var month = dtToday.getMonth() + 1;
+                var day = dtToday.getDate();
+                var year = dtToday.getFullYear();
+                if (month < 10)
+                    month = '0' + month.toString();
+                if (day < 10)
+                    day = '0' + day.toString();
+                var maxDate = year + '-' + month + '-' + day;
+                $('#vremePocetka').attr('min', maxDate);
+            });
+
+
+
+
+
+
+
+
+            $(document).ready(function () {
+                var salaId = $('input[name="salaId"]').val();
+                var korisnikId = $('input[name="korisnikId"]').val();
+                var id = $('input[name="id"]').val();
+                parseDate();
+
+                //generateTimeOptions();
+
+
+                fetchAndPopulateDurations();
+
+                // console.log("Glupi time smrdljivi: " + time);
+                var datumPocetka = $('#vremePocetka').val();
+                availableTimesForReservation(datumPocetka, salaId, korisnikId, id,false,false);
+
+                // console.log("Glupi minuti: " + minutes);
+
+                $('#vremePocetka').on('change', function () {
+                    var datumPocetka = $(this).val();
+                    var minutes = $(this).val();
+                    var strDateTime = concatenateDateAndTime(datumPocetka, convertToMinute(minutes));
+                    console.log("Promena datuma");
+//                    console.log(id);
+//                    console.log(salaId);
+//                    console.log(korisnikId);
+
+//                    console.log(datumPocetka);
+                    
+                    availableTimesForReservation(datumPocetka, salaId, korisnikId, id,true,true);
+
+                    // Proveri da li je datumPocetka postavljen
+
+
+
+
+
+                });
+
+
+
+
+                $('#time').on('change', function () {
+                    var minutes = $(this).val();
+                    var datumPocetka = $('#vremePocetka').val();
+                    var strDateTime = concatenateDateAndTime(datumPocetka, convertToMinute(minutes));
+
+                    console.log("Promena vremena pocetka");
+                    fetchAndPopulateDurations();
+                    getMinutesTillNextReservation(strDateTime, function (minTilNextRes) {
+                        filterComboBox(minTilNextRes, strDateTime);
+                        updateStartTime(strDateTime);
+                        updateEndTime(strDateTime);
+                    });
+                });
+
+                $('#tem').on('change', function () {
+                    console.log("Promena trajanja");
+                    var minutes = $('#time').val();
+                    var datumPocetka = $('#vremePocetka').val();
+                    var strDateTime = concatenateDateAndTime(datumPocetka, convertToMinute(minutes));
+                    updateEndTime(strDateTime);
+                });
+            });
+
+
+
+
+            var timeSelect = document.getElementById("time");
+            var dateInput = document.getElementById("vremePocetka");
+            var durationSelect = document.getElementById('tem');
+            var endTimeInput = document.getElementById('vremeZavrsetka');
+
+            function generateTimeOptions() {
+
+                const timeSelect = document.getElementById('time'); // Pretpostavljam da imate ID za select element
+
+                for (let hour = 8; hour < 23; hour++) {
+                    for (let minute of [0, 15, 30, 45]) {
+                        const option = document.createElement('option');
+                        const hourStr = hour.toString();
+                        const minuteStr = minute === 0 ? '' : `${minute}min`;
+
+                        option.value = `${hourStr}:${minute.toString().padStart(2, '0')}`;
+                        option.textContent = minute === 0 ? `${hourStr}h` : `${hourStr}h ${minuteStr}`;
+                        timeSelect.appendChild(option);
+                    }
+                }
+
+                const option = document.createElement('option');
+                option.value = `23:00`;
+                option.textContent = `23h`;
+                timeSelect.appendChild(option);
+            }
+
+
+
+
+            function getMinutesTillNextReservation(datumPocetka, callback) {
+                $.ajax({
+                    url: 'http://localhost:8080/reservation/getMinutesTillNextReservation',
+                    type: 'GET',
+                    data: {
+                        date: datumPocetka,
+                        salaId: $('input[name="salaId"]').val(),
+                        korisnikId: $('input[name="korisnikId"]').val(),
+                        id: $('input[name="id"]').val()
+                    },
+                    success: function (response) {
+                        if (response === null || response === undefined || isNaN(response)) {
+                            console.log('Nema rezultata ili je rezultat nevalidan');
+                            callback(null);
+                        } else {
+                            console.log('Minuti do sledeće rezervacije: ' + response);
+                            callback(parseInt(response, 10));
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Došlo je do greške prilikom dobavljanja slobodnih termina:', textStatus, errorThrown);
+                        callback(null);
+                    }
+                });
+            }
+
+
+
+
+
+            function fetchAndPopulateDurations() {
+                $.ajax({
+                    url: '/reservation/allDurationForOneReservation',
+                    type: 'GET',
+                    success: function (response) {
+                        // Populate the duration select
+                        durationSelect.innerHTML = ''; // Clear existing options
+                        response.forEach(duration => {
+                            const option = document.createElement('option');
+
+                            option.value = duration;
+                            option.textContent = duration;
+                            durationSelect.appendChild(option);
+
+                        });
+
+
+
+                    },
+                    error: function (error) {
+                        console.error('Došlo je do greške prilikom dobavljanja trajanja:', error);
+                    }
+                });
+            }
+
+
+
+            function concatenateDateAndTime(strDate, minutes) {
+
+                console.log(strDate);
+                console.log("Minutici lepi su:" + minutes);
+
+                const date = new Date(strDate);
+
+                const newDate = new Date(date.getTime() + minutes * 60000);
+
+                if (isNaN(newDate.getTime())) {
+                    console.error("Invalid New Date:", newDate);
+                    return null;
+                }
+                return  newDate.toISOString().slice(0, 16);
+
+            }
+
+
+
+
+            function setDuration(strDateTime,promenaDatuma) {
+                if(promenaDatuma){
+                      var firstDurationOption = $('#tem option:first').val();
+                                    document.getElementById("tem").value = firstDurationOption;
+                                    return;
+                }
+                else{
+                     var strZavrsetak = $('input[name="vremeZavrsetka"]').val();
+                }
+              
+                console.log(strZavrsetak);
+                let datumZavrsetka = new Date(strZavrsetak);
+                let datumPocetak = new Date(strDateTime);
+                let totalMinutes = (datumZavrsetka.getTime() - datumPocetak.getTime()) / 60000;
+
+                let hour = parseInt(totalMinutes / 60);
+                let strHour = hour + 'h';
+                let minutes = totalMinutes % 60;
+
+                if (minutes !== 0) {
+                    document.getElementById("tem").value = hour + 'h' + ' ' + minutes + 'min';
+                    console.log('Trajanje u setDuration: ' + document.getElementById("tem").value);
+
+
+                } else {
+                    document.getElementById("tem").value = strHour;
+                    console.log('Trajanje u setDuration: ' + document.getElementById("tem").value);
+                }
+
+
+            }
+
+            function  convertToMinute(timeStr) {
+
+                //     Split the string into partslet
+                parts = timeStr.split(' ');
+                let totalMinutes = 0;     // Iterate through each part and calculate the total minutes   
+                parts.forEach(part => {
+                    if (part.includes('h')) {
+                        // Extract hours and convert to minutes
+                        let hours = parseInt(part.replace('h', ''));
+                        totalMinutes += hours * 60;
+                    }
+                    if (part.includes('min')) {             // Extract minutes
+                        let minutes = parseInt(part.replace('min', ''));
+                        totalMinutes += minutes;
+                    }
+                });
+                return totalMinutes;
+
+            }
+
+//            function convertToMinutes(timeStr) {
+////                // Split the string into partslet
+////                parts = timeStr.split(' '); 
+////                let totalMinutes = 0;     // Iterate through each part and calculate the total minutes   
+////                parts.forEach(part => {
+////                    if (part.includes('h')) {
+////                        // Extract hours and convert to minutes
+////                        let hours = parseInt(part.replace('h', ''));
+////                        totalMinutes += hours * 60;
+////                    }
+////                    if (part.includes('min')) {             // Extract minutes
+////                        let minutes = parseInt(part.replace('min', ''));
+////                        totalMinutes += minutes;
+////                    }
+////                });
+////                return totalMinutes;
+//
+//                console.log(typeof timeStr);
+//                parts = timeStr.split(":");
+//                return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+//            }
+
+            function updateEndTime(startTime) {
+                // Get the start time and duration values
+
+                const durationSelect = document.getElementById('tem');
+                const endTimeInput = document.getElementById('vremeZavrsetka');
+
+
+                // Parse the start time
+                startTime = new Date(startTime);
+                console.log("Vreme pocetka u funkciji updateEndTime:" + startTime);
+                let minutes = convertToMinute(durationSelect.value);
+
+                console.log('Minuti: ' + minutes);
+
+                let endTime = new Date(startTime.getTime() + (120 + minutes) * 60000);
+                console.log("Vreme zavsetka u funkciji updateEndTime:" + endTime);
+                endTimeInput.value = endTime.toISOString().slice(0, 16);
+                console.log("Vreme zavrsetka nakon ISOString funckije: " + endTimeInput.value);
+
+            }
+
+
+            function filterComboBox(minuteLimit, strVremePocetka) {
+                const selectElement = document.getElementById('tem');
+                const options = selectElement.options;
+                console.log("Vreme do sledece rezervacije: " + minuteLimit);
+
+
+
+
+                for (let i = options.length - 1; i >= 0; i--) {
+                    const option = options[i];
+                    const optionMinutes = convertToMinute(option.value);
+                    const vremePocetka = new Date(strVremePocetka);
+                    const novoVreme = new Date(vremePocetka.getTime() + optionMinutes * 60000);
+                    const krajDana = new Date(strVremePocetka);
+                    krajDana.setDate(krajDana.getDate() + 1); // Dodaj jedan dan
+                    krajDana.setHours(0, 0, 0, 0); // Postavi na ponoć sledećeg dan
+
+                    if (optionMinutes > minuteLimit || novoVreme > krajDana) {
+                        selectElement.removeChild(option);
+                    }
+                }
+            }
+
+//            $(document).ready(function () {
+//
+//
+//
+//
+////                parseDate();
+////                fetchAndPopulateDurations();
+////                   var time = $('#time').val();
+////                      var datumPocetka = $('#vremePocetka').val();
+////                     var minutes = convertToMinute(time);
+////                    var strDateTime = concatenateDateAndTime(datumPocetka, minutes);
+////
+////                $('#vremePocetka, #time').on('change', function () {
+////                    fetchAndPopulateDurations();
+////                    const minTilNextRes = getMinutesTillNextReservation(strDateTime);
+////                    filterComboBox(strDateTime, minTilNextRes);
+////                    updateEndTime(strDateTime);
+////                });
+////
+////                $('#tem').on('change', function () {
+////                  
+////                    updateEndTime(strDateTime);
+////                });
+//            });
+
+            function availableTimesForReservation(datumPocetka, salaId, korisnikId, id,setDur,setTime) {
+
+                if (datumPocetka) {
+                    // AJAX GET zahtev
+                    $.ajax({
+                        url: 'http://localhost:8080/reservation/availableReservations',
+                        type: 'GET',
+                        data: {
+                            date: datumPocetka,
+                            salaId: salaId,
+                            korisnikId: korisnikId,
+                            id: id
+                        },
+                        success: function (response) {
+                            // Očisti postojeće opcije iz combobox-a
+                            $('#time').empty();
+
+                            // Popuni combobox sa novim opcijama
+                            response.forEach(function (vreme) {
+                                // console.log("Vreme pocekta u ajaxu:" + vreme);
+                                var option = $('<option></option>').attr('value', vreme).text(vreme);
+                                $('#time').append(option);
+                            });
+
+
+                            parseTime(setTime);
+                            var datumPocetka = $('#vremePocetka').val();
+                            var minutes = $('#time').val();
+                            var strDateTime = concatenateDateAndTime(datumPocetka, convertToMinute(minutes));
+
+                            fetchAndPopulateDurations();
+                               
+                            getMinutesTillNextReservation(strDateTime, function (minTilNextRes) {
+                                filterComboBox(minTilNextRes, strDateTime);
+                                
+                                setDuration(strDateTime,setDur);
+                                updateStartTime(strDateTime);
+                                updateEndTime(strDateTime);
+                            });
+
+                        },
+                        error: function (error) {
+                            console.error('Došlo je do greške prilikom dobavljanja slobodnih termina:', error);
+                        }
+                    });
+                }
+            }
+            
+            function updateStartTime(startTime){
+                
+                var date=new Date(startTime);
+                let dateNew = new Date(date.getTime() + 120*60000);
+
+                var time=document.getElementById("vremePoc");
+                time.value = dateNew.toISOString().slice(0, 16);
+
+                
+            }
+
+        </script>
+    </body>
+</html>
